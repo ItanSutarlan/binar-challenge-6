@@ -1,0 +1,562 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+      "description": "Ini adalah repository RESTful API yang menjadi basis untuk teman-teman berkreasi di challenge chapter 8.",
+      "title": "Restful API",
+      "version": "1.0.0",
+      "contact": {
+        "name": "Itan Sutarlan",
+        "email": "sutarlanitan@gmail.com"
+      }
+    },
+    "servers": [
+      {
+        "description": "Player RESTful API Server",
+        "url": "http://localhost:3000/api/v1"
+      }
+    ],
+    "paths": {
+        "/players": {
+            "get": {
+                "tags": [
+                    "players"
+                ],
+                "summary": "Get all players",
+                "description": "Get all players by default",
+                "responses": {
+                    "200": {
+                        "description": "succes get all players",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/player"
+                                            }
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "result": "Success",
+                                    "data": [
+                                          {
+                                            "id": 1,
+                                            "username": "PussySlayer613",
+                                            "email": "pussy.slay3r@gmail.com",
+                                            "password": "$2b$10$jRKAgM3AFNK8hElEVz5bwO.YptNNQIhXcw.FiF8qsTLtzaf9OrHfe",
+                                            "experience": 600000,
+                                            "lvl": 600,
+                                            "createdAt": "2022-04-28T04:37:36.933Z",
+                                            "updatedAt": "2022-04-28T04:37:36.933Z"
+                                          },
+                                          {
+                                            "id": 2,
+                                            "username": "HardcoreLevellingWarrior",
+                                            "email": "hclw@gmail.com",
+                                            "password": "$2b$10$Et4nnHNHdjif1IBAw1n03eYczezfy1.M0ZW0lx6I.Dy3daCMHN/rG",
+                                            "experience": 600000,
+                                            "lvl": 666,
+                                            "createdAt": "2022-04-28T04:37:37.001Z",
+                                            "updatedAt": "2022-04-28T04:37:37.001Z"
+                                          },
+                                          {
+                                            "id": 3,
+                                            "username": "dohok",
+                                            "email": "dohok@gmail.com",
+                                            "password": "$2b$10$Orq2NJDR4Tiyobg6jdkE4eDD0imwpKs94mQeZSUYWTwe9oVeqPkOm",
+                                            "experience": 45,
+                                            "lvl": 0,
+                                            "createdAt": "2022-04-28T22:23:10.601Z",
+                                            "updatedAt": "2022-04-28T22:23:10.601Z"
+                                          }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "players"
+                ],
+                "summary": "Create new player",
+                "description": "Create new player to database",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/player"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "success create new player",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/player"
+                                },
+                                "example": {
+                                    "result": "Success",
+                                    "data": {
+                                        "id": 3,
+                                        "username": "dohok",
+                                        "email": "dohok@gmail.com",
+                                        "password": "$2b$10$Orq2NJDR4Tiyobg6jdkE4eDD0imwpKs94mQeZSUYWTwe9oVeqPkOm",
+                                        "experience": 45,
+                                        "lvl": 0,
+                                        "updatedAt": "2022-04-28T22:23:10.601Z",
+                                        "createdAt": "2022-04-28T22:23:10.601Z"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "username or email cannot empty",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/players/{id}": {
+            "get": {
+                "tags": [
+                    "players"
+                ],
+                "summary": "get player by id",
+                "description": "find player match id from database",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success get player by id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type":"object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/player"
+                                        }
+                                    }
+                                }
+                            }        
+                        }
+                    },
+                    "404": {
+                        "description": "player with specified id not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "string",
+                                            "example": "Not found!"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Player with id = 4 not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "players"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "summary": "Update Player by id",
+                "description": "Update existing player in database",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/player"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successfully updated player in the database",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "string",
+                                            "example": "Success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Player with id 2 successfully updated"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    },
+                    "400": {
+                        "description": "username or email cannot empty",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "player with specified id not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "string",
+                                            "example": "Not found!"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Player with id = 4 not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+            },
+            "delete": {
+                "tags": [
+                    "players"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "summary": "delete player by id",
+                "description": "delete player by id in the database",
+                "responses": {
+                    "200": {
+                        "description": "player successfully deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "string",
+                                            "example": "succes"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Player with id: 6, was deleted successfully"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Client error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/players/exp/{id}": {
+            "post": {
+                "tags": [
+                    "players"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "summary": "Update level and experience",
+                "description": "Update level and experience of player in the database",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "exp": {
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successfully updated level and experience in the database",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "string",
+                                            "example": "Success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Player with id = 2 gain 3 experience. Total experience = 50"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    },
+                    "400": {
+                        "description": "client error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "player with specified id not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "result": {
+                                            "type": "string",
+                                            "example": "Not found!"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Player with id = 4 not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Internal server error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+    },
+    "components": {
+        "parameters": {
+            "id": {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "description": "ID of player to return",
+                "schema": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "schemas": {
+            "player": {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password"
+                    },
+                    "experience": {
+                        "type": "integer"
+                    }
+                }
+            }
+        }
+    },
+    "externalDocs": {
+        "description": "Github Repository",
+        "url": "https://github.com/ItanSutarlan/binar-challenge-6"
+    }
+  }
