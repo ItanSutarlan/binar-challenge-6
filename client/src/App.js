@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import UserTable from './tables/UserTable';
 import AddUserForm from './forms/AddUserForm';
 import EditUserForm from './forms/EditUserForm';
@@ -26,6 +26,17 @@ const App = () => {
   const [searchedUser, setSearchedUser] = useState([]);
   const [editing, setEditing] = useState(false);
   const [searching, setSearching] = useState(false);
+
+  useEffect(() => {
+    if (searchedUser.length > 0) {
+      let data = [];
+      searchedUser.forEach((filteredUser) => {
+        const newData = users.filter((user) => user.id === filteredUser.id);
+        data = [...data, ...newData];
+      });
+      setSearchedUser(data);
+    }
+  }, [users]);
 
   const initialFormState = {
     id: null,
